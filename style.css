@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  font-family: "Comic Sans MS", cursive;
+  background: linear-gradient(135deg, #ffd6e8, #d6f0ff);
+  height: 100vh;
+  overflow: hidden;
+  color: #4a004a;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: fade 0.8s ease;
+}
+
+.page.active {
+  display: flex;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+button {
+  padding: 12px 28px;
+  border-radius: 30px;
+  border: none;
+  background: #ff9ecb;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  margin-top: 20px;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Floating cats */
+.float-cat {
+  position: absolute;
+  width: 90px;
+  animation: float 6s infinite ease-in-out;
+}
+
+.cat1 { top: 10%; left: 10%; }
+.cat2 { bottom: 10%; right: 10%; animation-delay: 2s; }
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-25px); }
+  100% { transform: translateY(0); }
+}
+
+/* Clickable image */
+.click-img {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.click-img:hover {
+  transform: scale(1.1) rotate(3deg);
+}
+
+/* Final image */
+.final-img {
+  width: 260px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(255,182,193,0.8);
+}
+
+/* Fade animation */
+@keyframes fade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}

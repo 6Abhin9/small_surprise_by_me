@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>surprise ☀️</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  font-family: 'Comic Sans MS', cursive;
+  background: linear-gradient(135deg, #ffd1dc 0%, #ffb6d9 25%, #e0f7ff 75%, #ffd1dc 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  overflow: hidden;
+  color: #4b004b;
+  cursor: default;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  font-size: 2rem;
+  opacity: 0;
+  animation: floatHeart 8s infinite;
+  pointer-events: none;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.8; }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* Sparkles */
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkleAnim 1.5s ease-out forwards;
+}
+
+@keyframes sparkleAnim {
+  0% {
+    transform: translate(0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--tx), var(--ty)) scale(0);
+    opacity: 0;
+  }
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+  padding: 20px;
+}
+
+.scene.active {
+  display: flex;
+}
+
+/* Text with glow */
+h1 {
+  font-size: clamp(2.5rem, 6vw, 4.8rem);
+  margin-bottom: 15px;
+  text-shadow: 0 0 20px rgba(255, 182, 193, 0.8);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+p {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  opacity: 0.9;
+  text-shadow: 0 2px 10px rgba(255, 182, 193, 0.5);
+}
+
+.tap {
+  margin-top: 25px;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  opacity: 0.7;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 30px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+button {
+  padding: 18px 36px;
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: clamp(1.3rem, 3vw, 1.8rem);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+.correct { 
+  background: linear-gradient(135deg, #ff9ecb, #ff6eb4);
+  color: white;
+}
+
+.wrong {
+  background: linear-gradient(135deg, #ccc, #999);
+  position: fixed;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+/* Floating cats */
+.cat {
+  position: absolute;
+  width: clamp(120px, 22vw, 180px);
+  animation: float 6s infinite ease-in-out;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.cat:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.cat.left { left: 5%; top: 15%; }
+.cat.right { right: 5%; bottom: 15%; animation-delay: 2s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-35px); }
+}
+
+/* Images */
+.reveal {
+  width: clamp(300px, 60vw, 480px);
+  border-radius: 28px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+  animation: wiggle 3s infinite;
+}
+
+.reveal:hover {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 15px 40px rgba(255, 105, 180, 0.6);
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-2deg); }
+  75% { transform: rotate(2deg); }
+}
+
+.final {
+  width: clamp(320px, 50vw, 560px);
+  border-radius: 30px;
+  box-shadow: 0 0 45px rgba(255, 182, 193, 0.9);
+  animation: photoGlow 3s infinite;
+}
+
+@keyframes photoGlow {
+  0%, 100% { box-shadow: 0 0 45px rgba(255, 182, 193, 0.9); }
+  50% { box-shadow: 0 0 60px rgba(255, 105, 180, 1); }
+}
+
+/* Final layout */
+.final-layout {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Side music */
+.side-music {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  max-width: 220px;
+  opacity: 0.9;
+}
+
+.side-music img {
+  width: 180px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.side-music img:hover {
+  transform: scale(1.05);
+}
+
+.side-music audio {
+  width: 200px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .final-layout {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .cat {
+    width: clamp(80px, 20vw, 120px);
+  }
+}
+
+/* Fade */
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px);
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #ff69b4;
+  animation: confettiFall 3s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<img src="kichuright.png" class="cat left" alt="cute cat">
+<img src="IMG-20230626-WA0051(1).png" class="cat right" alt="cute cat">
+
+<!-- Scene 1 -->
+<div class="scene active" id="scene1">
+  <h1>Hi Kichu 😚</h1>
+  <p>I made something tiny for you</p>
+  <div class="tap">tap anywhere 💗</div>
+</div>
+
+<!-- Scene 2 -->
+<div class="scene">
+  <h1>Almost there 🎀</h1>
+  <p>Don't blink okay?</p>
+
+  <div class="buttons">
+    <button class="correct" onclick="nextScene()">Proceed 💖</button>
+    <button class="wrong" id="skipBtn">Skip 🙄</button>
+  </div>
+</div>
+
+<!-- Scene 3 -->
+<div class="scene">
+  <h1>✨ Happy New Year ✨</h1>
+  <p>thazhe njekki pottikk</p>
+  <img src="box.png" class="reveal" onclick="openBox()" alt="mystery box">
+</div>
+
+<!-- Scene 4 -->
+<div class="scene">
+  <h1>miss you bitch</h1>
+  <p>currently broke af, so no gifts, I am the gift (●'◡'●)</p>
+
+  <div class="final-layout">
+    <img src="us.jpg" class="final" alt="us together">
+
+    <div class="side-music">
+      <img src="dogcat.jpg" alt="our song">
+      <audio controls>
+        <source src="those_eyes.mp3" type="audio/mpeg">
+      </audio>
+    </div>
+  </div>
+</div>
+
+<script>
+let current = 0;
+const scenes = document.querySelectorAll('.scene');
+
+// Create floating hearts
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.textContent = ['💖', '💕', '💗', '💓', '💝'][Math.floor(Math.random() * 5)];
+  heart.style.left = Math.random() * 100 + '%';
+  heart.style.animationDelay = Math.random() * 2 + 's';
+  heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+  document.body.appendChild(heart);
+  
+  setTimeout(() => heart.remove(), 8000);
+}
+
+// Spawn hearts periodically
+setInterval(createHeart, 1500);
+
+// Initial hearts
+for (let i = 0; i < 5; i++) {
+  setTimeout(createHeart, i * 300);
+}
+
+// Scene 1 auto advances on tap
+scenes[0].addEventListener('click', () => {
+  createSparkles(event.clientX, event.clientY);
+  nextScene();
+});
+
+function nextScene() {
+  if (current < scenes.length - 1) {
+    scenes[current].classList.remove('active');
+    current++;
+    scenes[current].classList.add('active');
+    
+    // Confetti on final scene
+    if (current === scenes.length - 1) {
+      createConfetti();
+    }
+  }
+}
+
+// Box opening with effects
+function openBox() {
+  createSparkles(event.clientX, event.clientY);
+  createConfetti();
+  setTimeout(nextScene, 300);
+}
+
+// Sparkle effect
+function createSparkles(x, y) {
+  for (let i = 0; i < 12; i++) {
+    const sparkle = document.createElement('div');
+    sparkle.className = 'sparkle';
+    sparkle.style.left = x + 'px';
+    sparkle.style.top = y + 'px';
+    
+    const angle = (Math.PI * 2 * i) / 12;
+    const distance = 50 + Math.random() * 50;
+    sparkle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+    sparkle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+    
+    const colors = ['#ff69b4', '#ff1493', '#ffd700', '#ffffff'];
+    sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+    
+    document.body.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 1500);
+  }
+}
+
+// Confetti explosion
+function createConfetti() {
+  for (let i = 0; i < 50; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.top = '-10px';
+      
+      const colors = ['#ff69b4', '#ff1493', '#ffd700', '#00bfff', '#ff6eb4'];
+      confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+      confetti.style.animationDelay = Math.random() * 0.3 + 's';
+      confetti.style.animationDuration = (Math.random() * 1 + 2) + 's';
+      
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }, i * 30);
+  }
+}
+
+// Skip button runs away
+const skipBtn = document.getElementById("skipBtn");
+let skipAttempts = 0;
+
+skipBtn.addEventListener("mouseenter", () => {
+  skipAttempts++;
+  const maxX = window.innerWidth - skipBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - skipBtn.offsetHeight - 20;
+  skipBtn.style.left = Math.random() * maxX + 10 + "px";
+  skipBtn.style.top = Math.random() * maxY + 10 + "px";
+  
+  if (skipAttempts >= 3) {
+    skipBtn.textContent = "mathi! 😤";
+  }
+  if (skipAttempts >= 5) {
+    skipBtn.textContent = "ada gommale, nokki irunno😏";
+    skipBtn.style.opacity = "0.5";
+  }
+});
+
+// Prevent audio clicks from changing scenes
+const audio = document.querySelector("audio");
+if (audio) {
+  audio.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+}
+
+// Add sparkles to button clicks
+document.querySelectorAll('button.correct').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    createSparkles(e.clientX, e.clientY);
+  });
+});
+</script>
+
+</body>
+</html>
